@@ -1,33 +1,35 @@
-from cerebros.backbones.base import BaseCerebrosBackbone, BaseCerebrosMessage
-import click
 import getpass
 import threading
 
 
 #===================================================================================================
-# ConsolecerebrosBackbone
+# BenderConsole
 #===================================================================================================
-class ConsolecerebrosBackbone(BaseCerebrosBackbone):
+class BenderConsole(object):
+
+
+    def __init__(self):
+        self.on_message_received = None
 
     def start(self):
         t = threading.Thread(target=self._raw_input)
         t.start()
 
-
     def send_message(self, msg):
-        click.echo(msg)
+        print msg
 
 
     def _raw_input(self):
         while True:
-            msg = ConsolecerebrosMessage(self, click.prompt('>', prompt_suffix=' '))
+            user_input = raw_input('> ')
+            msg = ConsoleMessage(self, user_input)
             self.on_message_received(msg)
 
 
 #===================================================================================================
-# ConsolecerebrosMessage
+# ConsoleMessage
 #===================================================================================================
-class ConsolecerebrosMessage(BaseCerebrosMessage):
+class ConsoleMessage(object):
     
     def __init__(self, backbone, msg):
         self._msg = msg

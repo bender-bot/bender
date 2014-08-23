@@ -1,7 +1,7 @@
 #===================================================================================================
-# BaseCerebrosBackbone
+# IBackbone
 #===================================================================================================
-class BaseCerebrosBackbone(object):
+class IBackbone(object):
 
     def __init__(self):
         self.on_message_received = None
@@ -16,11 +16,11 @@ class BaseCerebrosBackbone(object):
 
 
 #===================================================================================================
-# BaseCerebrosMessage
+# IMessage
 #===================================================================================================
-class BaseCerebrosMessage(object):
+class IMessage(object):
 
-    def reply(self, message):
+    def reply(self, text):
         raise NotImplementedError()
 
 

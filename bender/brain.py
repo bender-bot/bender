@@ -8,7 +8,7 @@ import yaml
 class Brain(dict):
 
     def _get_brain_filename(self):
-        return os.path.expanduser('~/.cerebros.yaml')
+        return os.path.expanduser('~/.bender.yaml')
 
 
     def dump(self):

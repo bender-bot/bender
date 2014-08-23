@@ -1,12 +1,12 @@
-from cerebros.decorators import respond
+from bender.decorators import respond
 from jenkinsapi.jenkins import Jenkins
 import re
 
 
 #===================================================================================================
-# JenkinsCerebrosScript
+# JenkinsBenderScript
 #===================================================================================================
-class JenkinsCerebrosScript(object):
+class JenkinsBenderScript(object):
 
     def initialize(self, brain):
         self._load_notifications()

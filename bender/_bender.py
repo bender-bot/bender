@@ -1,6 +1,6 @@
-from cerebros.backbones.console import ConsoleCerebrosBackbone
-from cerebros.brain import Brain
-from cerebros.scripts.jenkins import JenkinsCerebrosScript
+from bender.backbones.console import BenderConsole
+from bender.brain import Brain
+from bender.scripts.jenkins import JenkinsBenderScript
 from collections import OrderedDict
 from concurrent.futures.thread import ThreadPoolExecutor
 import re
@@ -8,9 +8,9 @@ import threading
 
 
 #===================================================================================================
-# Cerebros
+# Bender
 #===================================================================================================
-class Cerebros(object):
+class Bender(object):
 
     def __init__(self, backbone):
         self._backbone = backbone
@@ -63,10 +63,10 @@ class Cerebros(object):
 # __main__
 #===================================================================================================
 if __name__ == '__main__':
-    backbone = ConsoleCerebrosBackbone()
-    jenkins = JenkinsCerebrosScript()
+    backbone = BenderConsole()
+    jenkins = JenkinsBenderScript()
 
-    bot = Cerebros(backbone)
+    bot = Bender(backbone)
     bot.register_script(jenkins)
     bot.start()
 
