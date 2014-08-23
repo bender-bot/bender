@@ -10,18 +10,21 @@ class BenderConsole(object):
 
     def __init__(self):
         self.on_message_received = None
+        self._thread = None
 
     def start(self):
-        t = threading.Thread(target=self._raw_input)
-        t.start()
+        self._thread = threading.Thread(target=self._raw_input)
+        self._thread.start()
 
     def send_message(self, msg):
-        print msg
-
+        print '\n' + msg
 
     def _raw_input(self):
         while True:
-            user_input = raw_input('> ')
+            try:
+                user_input = raw_input('> ')
+            except EOFError:
+                return
             msg = ConsoleMessage(self, user_input)
             self.on_message_received(msg)
 

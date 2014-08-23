@@ -1,6 +1,5 @@
 from bender.backbones.console import BenderConsole
 from bender.brain import Brain
-from bender.scripts.jenkins import JenkinsBenderScript
 from collections import OrderedDict
 from concurrent.futures.thread import ThreadPoolExecutor
 import re
@@ -37,15 +36,19 @@ class Bender(object):
         self._backbone.start()
 
         for script in self._scripts:
-            script.initialize(self.brain)
+            script.initialize(self._brain)
 
 
     def on_message_received(self, msg):
         
         def foo(func, brain, msg, match):
-            func(self._brain, msg, match)
-            with self._brain_lock:
-                brain.dump()
+            try:
+                func(self._brain, msg, match)
+            except Exception as e:
+                self._backbone.send_message('*BZZT* %s' %e)
+            else:
+                with self._brain_lock:
+                    brain.dump()
         
 
         handled = False
@@ -59,16 +62,4 @@ class Bender(object):
             msg.reply('Command not recognized')
 
 
-#===================================================================================================
-# __main__
-#===================================================================================================
-if __name__ == '__main__':
-    backbone = BenderConsole()
-    jenkins = JenkinsBenderScript()
 
-    bot = Bender(backbone)
-    bot.register_script(jenkins)
-    bot.start()
-
-    while True:
-        pass
