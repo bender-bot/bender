@@ -1,3 +1,4 @@
+import inspect
 import pkg_resources
 from bender import scripts
 from bender.brain import Brain
@@ -35,8 +36,10 @@ class Bender(object):
 
     def register_setuptools_scripts(self):
         for p in pkg_resources.iter_entry_points('bender_script'):
-            class_ = p.load()
-            self.register_script(p.name, class_())
+            obj = p.load()
+            if inspect.isclass(obj):
+                obj = obj()
+            self.register_script(p.name, obj)
 
 
     def get_script(self, name):
@@ -61,7 +64,7 @@ class Bender(object):
             try:
                 hooks.call(hook, brain=self._brain, msg=msg, match=match)
             except Exception as e:
-                self._backbone.send_message('*BZZT* %s' %e)
+                msg.reply('*BZZT* %s' %e)
             else:
                 with self._brain_lock:
                     brain.dump()
