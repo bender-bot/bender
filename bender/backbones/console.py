@@ -25,8 +25,9 @@ class BenderConsole(object):
                 user_input = raw_input('> ')
             except EOFError:
                 return
-            msg = ConsoleMessage(self, user_input)
-            self.on_message_received(msg)
+            if user_input:
+                msg = ConsoleMessage(self, user_input)
+                self.on_message_received(msg)
 
 
 #===================================================================================================
