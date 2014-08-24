@@ -17,7 +17,7 @@ class BenderConsole(object):
         self._thread.start()
 
     def send_message(self, text):
-        print '\n' + text
+        print('\n' + text)
 
     def _raw_input(self):
         while True:

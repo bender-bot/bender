@@ -34,7 +34,7 @@ class Bender(object):
 
 
     def register_builtin_scripts(self):
-        for name, script in scripts.get_builtin_scripts().iteritems():
+        for name, script in scripts.get_builtin_scripts().items():
             self.register_script(name, script)
 
 
@@ -56,7 +56,7 @@ class Bender(object):
         self.register_builtin_scripts()
         self.register_setuptools_scripts()
 
-        for script in self._scripts.itervalues():
+        for script in self._scripts.values():
             script.initialize(self._brain)
 
     def on_message_received(self, msg):
@@ -72,7 +72,7 @@ class Bender(object):
         
 
         handled = False
-        for regex, func in self._regex_to_response.iteritems():
+        for regex, func in self._regex_to_response.items():
             match = re.match(regex, msg.get_body(), re.IGNORECASE | re.DOTALL)
             if match:
                 f = self._pool.submit(thread_exec, func, self._brain, msg, match)
