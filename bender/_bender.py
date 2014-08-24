@@ -1,4 +1,3 @@
-from bender.backbones.console import BenderConsole
 from bender.brain import Brain
 from collections import OrderedDict
 from concurrent.futures.thread import ThreadPoolExecutor
@@ -15,19 +14,25 @@ class Bender(object):
         self._backbone = backbone
         self._brain = Brain()
         self._brain_lock = threading.Lock()
-        self._pool = ThreadPoolExecutor(max_workers=4)
         self._regex_to_response = OrderedDict()
-        self._scripts = []
+        self._scripts = OrderedDict()
+
+        self._pool = ThreadPoolExecutor(max_workers=4)
+        self._futures = []  # list of futures submitted to the pool
 
     
-    def register_script(self, inst):
-        for attr in dir(inst):
-            value = getattr(inst, attr)
+    def register_script(self, name, script):
+        for attr in dir(script):
+            value = getattr(script, attr)
             if getattr(value, 'response', False):
                 regex = value.regex
                 self._regex_to_response[regex] = value
 
-        self._scripts.append(inst)
+        self._scripts[name] = script
+
+
+    def get_script(self, name):
+        return self._scripts[name]
 
 
     def start(self):
@@ -35,13 +40,12 @@ class Bender(object):
         self._backbone.on_message_received = self.on_message_received
         self._backbone.start()
 
-        for script in self._scripts:
+        for script in self._scripts.itervalues():
             script.initialize(self._brain)
-
 
     def on_message_received(self, msg):
         
-        def foo(func, brain, msg, match):
+        def thread_exec(func, brain, msg, match):
             try:
                 func(self._brain, msg, match)
             except Exception as e:
@@ -55,11 +59,18 @@ class Bender(object):
         for regex, func in self._regex_to_response.iteritems():
             match = re.match(regex, msg.get_body(), re.IGNORECASE | re.DOTALL)
             if match:
-                self._pool.submit(foo, func, self._brain, msg, match)
+                f = self._pool.submit(thread_exec, func, self._brain, msg, match)
+                self._futures.append(f)
                 handled = True
 
         if not handled:
             msg.reply('Command not recognized')
+
+
+    def wait_all_messages(self):
+        while self._futures:
+            f = self._futures.pop()
+            f.result()  # wait until future returns
 
 
 

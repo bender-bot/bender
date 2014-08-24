@@ -8,4 +8,4 @@ class HelloScript(object):
 
     @respond(r'hey|hello|hi')
     def hello(self, brain, msg, match):
-        msg.reply('hi, you bastard')
+        msg.reply('Hi, %s, you bastard.' % msg.get_sender())

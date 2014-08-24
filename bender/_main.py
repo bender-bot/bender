@@ -10,7 +10,7 @@ def main(argv=None):
         argv = sys.argv
     backbone = BenderConsole()
     bot = Bender(backbone)
-    bot.register_script(HelloScript())
+    bot.register_script('hello', HelloScript())
     backbone.send_message('Hey, my name is Bender. Can I help ya?')
     bot.start()
     try:
