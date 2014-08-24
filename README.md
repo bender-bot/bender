@@ -11,8 +11,8 @@ Testing is done with [pytest](http://pytest.org/latest/) and
 To run the tests:
 
 ```bash
-$ virtualenv .env27
-$ source .env27/bin/activate # or .env27\Scripts\activate.bat on Windows
+$ virtualenv .env
+$ source .env/bin/activate # or .env27\Scripts\activate.bat on Windows
 $ pip install tox
 $ tox
 ```
