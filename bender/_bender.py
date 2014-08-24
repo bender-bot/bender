@@ -46,7 +46,7 @@ class Bender(object):
     def start(self):
         self._brain.load()
         self._backbone.on_message_received = self.on_message_received
-        self._backbone.start()
+        hooks.call_unique_hook(self._backbone, 'backbone_start_hook')
 
         self.register_builtin_scripts()
         self.register_setuptools_scripts()
