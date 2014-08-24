@@ -12,7 +12,7 @@ class Brain(dict):
 
 
     def dump(self):
-        with file(self._get_brain_filename(), 'w') as stream:
+        with open(self._get_brain_filename(), 'w') as stream:
             yaml.dump(self.items(), stream)
 
 
@@ -21,5 +21,5 @@ class Brain(dict):
         if not os.path.isfile(filename):
             return
 
-        with file(filename, 'r') as stream:
-            self.update(yaml.load(stream))
+        with open(filename, 'r') as stream:
+            self.update(yaml.safe_load(stream))

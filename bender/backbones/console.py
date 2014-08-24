@@ -21,7 +21,7 @@ class BenderConsole(object):
         self._send_message('Hey, my name is Bender. Can I help ya?')
 
     def _send_message(self, text):
-        print '\n' + text
+        print('\n' + text)
 
     def _raw_input(self):
         while True:

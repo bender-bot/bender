@@ -13,9 +13,9 @@ import threading
 #===================================================================================================
 class Bender(object):
 
-    def __init__(self, backbone):
+    def __init__(self, backbone, brain=None):
         self._backbone = backbone
-        self._brain = Brain()
+        self._brain = brain if brain is not None else Brain()
         self._brain_lock = threading.Lock()
         self._regex_to_response = OrderedDict()
         self._scripts = OrderedDict()
@@ -29,7 +29,7 @@ class Bender(object):
 
 
     def register_builtin_scripts(self):
-        for name, script in scripts.get_builtin_scripts().iteritems():
+        for name, script in scripts.get_builtin_scripts().items():
             self.register_script(name, script)
 
 
@@ -51,7 +51,7 @@ class Bender(object):
         self.register_builtin_scripts()
         self.register_setuptools_scripts()
 
-        for script in self._scripts.itervalues():
+        for script in self._scripts.values():
             hooks.call_unique_hook(script, 'script_initialize_hook',
                                    brain=self._brain)
 
@@ -68,7 +68,7 @@ class Bender(object):
         
 
         handled = False
-        for script in self._scripts.itervalues():
+        for script in self._scripts.values():
             for hook in hooks.find_hooks(script, 'respond_hook'):
                 match = re.match(hook.inputs['regex'], msg.get_body(),
                                  re.IGNORECASE | re.DOTALL)

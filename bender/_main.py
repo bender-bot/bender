@@ -13,7 +13,7 @@ def main(argv=None):
         while True:
             pass
     except KeyboardInterrupt:
-        print 'Bye'
+        print('Bye')
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv))
