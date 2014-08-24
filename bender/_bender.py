@@ -1,6 +1,7 @@
 import pkg_resources
 from bender import scripts
 from bender.brain import Brain
+from bender import hooks
 from collections import OrderedDict
 from concurrent.futures.thread import ThreadPoolExecutor
 import re
@@ -24,12 +25,6 @@ class Bender(object):
 
     
     def register_script(self, name, script):
-        for attr in dir(script):
-            value = getattr(script, attr)
-            if getattr(value, 'response', False):
-                regex = value.regex
-                self._regex_to_response[regex] = value
-
         self._scripts[name] = script
 
 
@@ -57,13 +52,14 @@ class Bender(object):
         self.register_setuptools_scripts()
 
         for script in self._scripts.itervalues():
-            script.initialize(self._brain)
+            hooks.call_unique_hook(script, 'script_initialize_hook',
+                                   brain=self._brain)
 
     def on_message_received(self, msg):
         
-        def thread_exec(func, brain, msg, match):
+        def thread_exec(hook, brain, msg, match):
             try:
-                func(self._brain, msg, match)
+                hooks.call(hook, brain=self._brain, msg=msg, match=match)
             except Exception as e:
                 self._backbone.send_message('*BZZT* %s' %e)
             else:
@@ -72,12 +68,15 @@ class Bender(object):
         
 
         handled = False
-        for regex, func in self._regex_to_response.iteritems():
-            match = re.match(regex, msg.get_body(), re.IGNORECASE | re.DOTALL)
-            if match:
-                f = self._pool.submit(thread_exec, func, self._brain, msg, match)
-                self._futures.append(f)
-                handled = True
+        for script in self._scripts.itervalues():
+            for hook in hooks.find_hooks(script, 'respond_hook'):
+                match = re.match(hook.inputs['regex'], msg.get_body(),
+                                 re.IGNORECASE | re.DOTALL)
+                if match:
+                    f = self._pool.submit(thread_exec, hook, self._brain, msg,
+                                          match)
+                    self._futures.append(f)
+                    handled = True
 
         if not handled:
             msg.reply('Command not recognized')
