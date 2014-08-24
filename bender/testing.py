@@ -40,11 +40,22 @@ class DumbMessage(object):
         return self._sender
 
 
+class VolatileBrain(dict):
+    """
+    A brain that doesn't save or load itself to disk.
+    """
+    def dump(self):
+        pass
+
+    def load(self):
+        pass
+
+
 class BenderTester(object):
 
     def __init__(self):
         self._backbone = DumbBackbone()
-        self._bender = Bender(self._backbone)
+        self._bender = Bender(self._backbone, brain=VolatileBrain())
         self._bender.register_builtin_scripts()
         self._bender.start()
 

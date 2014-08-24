@@ -12,9 +12,9 @@ import threading
 #===================================================================================================
 class Bender(object):
 
-    def __init__(self, backbone):
+    def __init__(self, backbone, brain=None):
         self._backbone = backbone
-        self._brain = Brain()
+        self._brain = brain if brain is not None else Brain()
         self._brain_lock = threading.Lock()
         self._regex_to_response = OrderedDict()
         self._scripts = OrderedDict()
