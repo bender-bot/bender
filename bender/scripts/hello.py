@@ -12,4 +12,4 @@ class HelloScript(object):
 
     @respond(r'hey|hello|hi')
     def hello(self, msg):
-        msg.reply('Hi, %s, you bastard.' % msg.get_sender())
+        msg.reply('Hi %s, you bastard.' % msg.get_sender())
