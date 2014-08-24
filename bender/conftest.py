@@ -45,7 +45,7 @@ class BenderTester(object):
     def __init__(self):
         self._backbone = DumbBackbone()
         self._bender = Bender(self._backbone)
-        self._bender.register_script('hello', HelloScript())
+        self._bender.register_builtin_scripts()
         self._bender.start()
 
     def get_script(self, name):

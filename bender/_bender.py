@@ -1,3 +1,4 @@
+from bender import scripts
 from bender.brain import Brain
 from collections import OrderedDict
 from concurrent.futures.thread import ThreadPoolExecutor
@@ -31,6 +32,11 @@ class Bender(object):
         self._scripts[name] = script
 
 
+    def register_builtin_scripts(self):
+        for name, script in scripts.get_builtin_scripts().iteritems():
+            self.register_script(name, script)
+
+
     def get_script(self, name):
         return self._scripts[name]
 
@@ -39,6 +45,8 @@ class Bender(object):
         self._brain.load()
         self._backbone.on_message_received = self.on_message_received
         self._backbone.start()
+
+        self.register_builtin_scripts()
 
         for script in self._scripts.itervalues():
             script.initialize(self._brain)

@@ -27,7 +27,6 @@ setup(
     author='Fabio Menegazzo, Bruno Oliveira',
     author_email='menegazzo@gmail.com',
     classifiers=classifiers,
-    # the following should be enabled for release
     install_requires=requirements,
     packages=['bender', 'bender.backbones', 'bender.scripts'],
     entry_points={
