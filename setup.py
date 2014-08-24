@@ -4,7 +4,7 @@ from setuptools import setup
 classifiers = [
     'Development Status :: 2 - Pre-Alpha',
     'Intended Audience :: Developers',
-    'License :: OSI Approved :: MIT License',
+    'License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)',
     'Operating System :: POSIX',
     'Operating System :: Microsoft :: Windows',
     'Operating System :: MacOS :: MacOS X',
@@ -22,7 +22,7 @@ setup(
     description='bender: general chat bot',
     version='0.1.0',
     url='https://github.com/bender-bot/bender',
-    license='MIT license',
+    license='LGPLv3',
     platforms=['unix', 'linux', 'osx', 'cygwin', 'win32'],
     author='Fabio Menegazzo, Bruno Oliveira',
     author_email='menegazzo@gmail.com',
