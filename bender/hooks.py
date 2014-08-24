@@ -11,7 +11,7 @@ def _get_only_args_spec(f):
 
 
 def make_decorator(hook_decl, inputs=()):
-    _get_only_args_spec(hook_decl)
+    hook_spec = _get_only_args_spec(hook_decl)
     inputs = inputs if type(inputs) in (tuple, list) else [inputs]
 
     def make_decorated(f):
@@ -19,7 +19,15 @@ def make_decorator(hook_decl, inputs=()):
         def decorated(*args, **kwargs):
             return f(*args, **kwargs)
         decorated.hook_name = hook_decl.__name__
-        decorated.spec = _get_only_args_spec(f)
+        decorated.spec = spec = _get_only_args_spec(f)
+
+        diff_specs = set(spec.args).difference(hook_spec.args)
+        diff_specs.discard('self')
+        if diff_specs:
+            msg = 'function <{name}>: argument names {args} are not valid for '\
+                  'hook "{hook}"'
+            raise HookError(msg.format(name=f.__name__, args=list(diff_specs),
+                                       hook=hook_decl.__name__))
         return decorated
 
     if inputs:

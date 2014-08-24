@@ -107,3 +107,19 @@ def test_hooks_call():
     assert calls == ['hook_3']
     with pytest.raises(hooks.HookError):
         hooks.call_unique_hook(impl, 'spec_a', x=1, y=20)
+
+
+def test_invalid_impl_signature():
+    def spec(x, y):
+        """spec docs"""
+    dec = hooks.make_decorator(spec)
+
+    with pytest.raises(hooks.HookError):
+        @dec
+        def foo(xx, yy): pass
+
+    with pytest.raises(hooks.HookError):
+        class Impl(object):
+            @dec
+            def foo(self, xx, yy): pass
+
