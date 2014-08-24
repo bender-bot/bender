@@ -1,7 +1,8 @@
 import getpass
 import threading
+import sys
 
-from bender.decorators import backbone_start
+from bender.decorators import backbone_start, backbone_shutdown
 
 
 #===================================================================================================
@@ -16,9 +17,17 @@ class BenderConsole(object):
 
     @backbone_start
     def start(self):
+        self._send_message('Hey, my name is Bender. Can I help ya?')
         self._thread = threading.Thread(target=self._raw_input)
         self._thread.start()
-        self._send_message('Hey, my name is Bender. Can I help ya?')
+
+    @backbone_shutdown
+    def shutdown(self):
+        print('Hit keyboard interrupt to get out')
+        try:
+            self._thread.join()
+        except KeyboardInterrupt:
+            pass
 
     def _send_message(self, text):
         print('\n' + text)
