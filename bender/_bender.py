@@ -1,3 +1,4 @@
+import pkg_resources
 from bender import scripts
 from bender.brain import Brain
 from collections import OrderedDict
@@ -37,6 +38,12 @@ class Bender(object):
             self.register_script(name, script)
 
 
+    def register_setuptools_scripts(self):
+        for p in pkg_resources.iter_entry_points('bender_script'):
+            class_ = p.load()
+            self.register_script(p.name, class_())
+
+
     def get_script(self, name):
         return self._scripts[name]
 
@@ -47,6 +54,7 @@ class Bender(object):
         self._backbone.start()
 
         self.register_builtin_scripts()
+        self.register_setuptools_scripts()
 
         for script in self._scripts.itervalues():
             script.initialize(self._brain)

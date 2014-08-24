@@ -33,6 +33,7 @@ setup(
         'console_scripts': [
             'bender = bender._main:main',
         ],
+        'pytest11': ['pytest-bender = bender.testing']
     }
 )
 
