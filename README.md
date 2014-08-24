@@ -2,7 +2,7 @@
 
 [![ci](http://img.shields.io/travis/bender-bot/bender.svg)](https://travis-ci.org/bender-bot/bender)
 
-Your *friendly* generic chat bot.
+Your "friendly" generic chat bot.
 
 ![bender](http://upload.wikimedia.org/wikipedia/en/thumb/a/a6/Bender_Rodriguez.png/220px-Bender_Rodriguez.png)
 
