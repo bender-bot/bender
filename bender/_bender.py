@@ -23,6 +23,7 @@ class Bender(object):
 
         self._pool = ThreadPoolExecutor(max_workers=4)
         self._futures = []  # list of futures submitted to the pool
+        self._stop_loop = threading.Event()
 
     
     def register_script(self, name, script):
@@ -30,7 +31,7 @@ class Bender(object):
 
 
     def register_builtin_scripts(self):
-        for name, script in scripts.get_builtin_scripts().items():
+        for name, script in scripts.get_builtin_scripts():
             self.register_script(name, script)
 
 
@@ -58,17 +59,37 @@ class Bender(object):
             hooks.call_unique_hook(script, 'script_initialize_hook',
                                    brain=self._brain)
 
+    def shutdown(self):
+        for name, script in list(self._scripts.items()):
+            hooks.call_unique_hook(script, 'script_shutdown_hook', brain=self._brain)
+            self._scripts.pop(name)
+        hooks.call_unique_hook(self._backbone, 'backbone_shutdown_hook',
+                               brain=self._brain)
+        self._brain.dump()
+        self._stop_loop.set()
+
+
+    def request_shutdown(self):
+        self._stop_loop.set()
+
+
+    def loop(self):
+        self.start()
+        self._stop_loop.wait()
+        self.shutdown()
+
+
     def on_message_received(self, msg):
         
         def thread_exec(hook, brain, msg, match):
             try:
-                hooks.call(hook, brain=self._brain, msg=msg, match=match)
+                hooks.call(hook, brain=self._brain, msg=msg, match=match,
+                           bender=self)
             except Exception as e:
                 msg.reply('*BZZT* %s' %e)
             else:
                 with self._brain_lock:
                     brain.dump()
-        
 
         handled = False
         for script in self._scripts.values():

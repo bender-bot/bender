@@ -13,3 +13,9 @@ class HelloScript(object):
     @respond(r'hey|hello|hi')
     def hello(self, msg):
         msg.reply('Hi %s, you bastard.' % msg.get_sender())
+
+    @respond(r'shutdown|quit|exit')
+    def shutdown(self, msg, bender):
+        msg.reply("I'm outta here!")
+        bender.request_shutdown()
+
