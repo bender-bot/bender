@@ -47,6 +47,10 @@ class Bender(object):
         return self._scripts[name]
 
 
+    def iter_scripts(self):
+        return iter(self._scripts.items())
+
+
     def start(self):
         self._brain.load()
         self._backbone.on_message_received = self.on_message_received
