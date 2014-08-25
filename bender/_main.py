@@ -8,7 +8,6 @@ def main(argv=None):
         argv = sys.argv
     backbone = BenderConsole()
     bot = Bender(backbone)
-    backbone.send_message('Hey, my name is Bender. Can I help ya?')
     bot.start()
     try:
         while True:

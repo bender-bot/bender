@@ -57,6 +57,7 @@ class BenderTester(object):
         self._backbone = DumbBackbone()
         self._bender = Bender(self._backbone, brain=VolatileBrain())
         self._bender.register_builtin_scripts()
+        self._bender.register_setuptools_scripts()
         self._bender.start()
 
     def get_script(self, name):

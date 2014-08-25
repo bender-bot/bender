@@ -7,14 +7,6 @@ class IBackbone(object):
         self.on_message_received = None
     
     
-    def start(self):
-        raise NotImplementedError()
-
-
-    def send_message(self, msg):
-        raise NotImplementedError()
-
-
 #===================================================================================================
 # IMessage
 #===================================================================================================
