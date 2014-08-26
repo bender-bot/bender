@@ -1,6 +1,5 @@
 import getpass
 import threading
-import sys
 
 from bender.decorators import backbone_start, backbone_shutdown
 
@@ -9,7 +8,6 @@ from bender.decorators import backbone_start, backbone_shutdown
 # BenderConsole
 #===================================================================================================
 class BenderConsole(object):
-
 
     def __init__(self, stdout=sys.stdout, stdin=sys.stdin):
         self._stdout = stdout
@@ -56,14 +54,11 @@ class ConsoleMessage(object):
         self._msg = msg
         self._backbone = backbone
 
-
     def get_body(self):
         return self._msg
 
-
     def reply(self, message):
         self._backbone._send_message(message)
-
 
     def get_sender(self):
         return getpass.getuser()

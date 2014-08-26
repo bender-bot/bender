@@ -1,7 +1,8 @@
 import sys
 
-from ._bender import Bender
 from bender.backbones.console import BenderConsole
+
+from ._bender import Bender
 
 
 def get_console():
