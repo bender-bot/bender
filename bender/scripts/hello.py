@@ -18,4 +18,3 @@ class HelloScript(object):
     def shutdown(self, msg, bender):
         msg.reply("I'm outta here!")
         bender.request_shutdown()
-
