@@ -9,6 +9,10 @@ def get_console():
     return BenderConsole()
 
 
+def get_brain():
+    return None
+
+
 def main(argv=None):
     if argv is None:
         # later we will probably use this to configure which backbone to use
