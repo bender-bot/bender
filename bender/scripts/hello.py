@@ -49,7 +49,7 @@ class HelloScript(object):
                     docstring = '<no docstring :(>'
                 doc_lines = [x.strip() for x in docstring.splitlines()
                              if x.strip()]
-                text = '{summary} (regex: {regex})'
+                text = '{regex}: {summary}'
                 lines.append(
                     text.format(summary=doc_lines[0],
                                 regex=repr(hook.inputs['regex'])))

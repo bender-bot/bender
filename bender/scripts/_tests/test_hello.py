@@ -16,9 +16,9 @@ def test_help(bender_tester):
     expected = [
         'Here are the commands I understand:',
         '',
-        "Send greetings to Bender (regex: 'hey|hello|hi')",
-        "Beg for help (regex: 'help')",
-        "Shutdown Bender handling. Careful! (regex: 'shutdown|quit|exit')",
+        "'hey|hello|hi': Send greetings to Bender",
+        "'help': Beg for help",
+        "'shutdown|quit|exit': Shutdown Bender handling. Careful!",
         '',
     ]
     bender_tester.assert_reply(m, '\n'.join(expected))
