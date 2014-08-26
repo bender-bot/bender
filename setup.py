@@ -1,5 +1,7 @@
 import sys
+
 from setuptools import setup
+
 
 classifiers = [
     'Development Status :: 2 - Pre-Alpha',
@@ -11,7 +13,10 @@ classifiers = [
     'Topic :: Utilities',
 ]
 py_versions = ['2', '2.6', '2.7']
-classifiers += ['Programming Language :: Python :: %s' % x for x in py_versions]
+classifiers += [
+    'Programming Language :: Python :: %s' % x
+    for x in py_versions
+]
 
 requirements = ['pyyaml']
 if sys.version_info[:2] < (3, 2):
@@ -36,4 +41,3 @@ setup(
         'pytest11': ['pytest-bender = bender.testing']
     }
 )
-

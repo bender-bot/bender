@@ -51,4 +51,3 @@ def backbone_shutdown_hook(brain):
     """
 
 backbone_shutdown = hooks.make_decorator(backbone_shutdown_hook)
-

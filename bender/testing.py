@@ -1,6 +1,6 @@
 import pytest
+
 from bender._bender import Bender
-from bender.scripts.hello import HelloScript
 
 
 @pytest.yield_fixture
@@ -74,10 +74,10 @@ class BenderTester(object):
 
     def assert_reply(self, msg, expected_reply):
         __tracebackhide__ = True
-        assert len(msg.replies) == 1, 'expected a single reply, but obtained %d' % len(msg.replies)
+        assert len(msg.replies) == 1, \
+            'expected a single reply, but obtained %d' % len(msg.replies)
         assert msg.replies[0] == expected_reply
 
     def assert_replies(self, msg, expected_replies):
         __tracebackhide__ = True
         assert msg.replies == expected_replies
-
