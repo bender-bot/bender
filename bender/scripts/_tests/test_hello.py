@@ -9,3 +9,16 @@ def test_hello(bender_tester, greeting):
     m = bender_tester.user_send(greeting, sender='Fry')
     bender_tester.assert_reply(m, 'Hi Fry, you bastard.')
     bender_tester.assert_replies(m, ['Hi Fry, you bastard.'])
+
+
+def test_help(bender_tester):
+    m = bender_tester.user_send('help')
+    expected = [
+        'Here are the commands I understand:',
+        '',
+        "'hey|hello|hi': Send greetings to Bender",
+        "'help': Beg for help",
+        "'shutdown|quit|exit': Shutdown Bender handling. Careful!",
+        '',
+    ]
+    bender_tester.assert_reply(m, '\n'.join(expected))
