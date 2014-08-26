@@ -1,12 +1,10 @@
 import getpass
+import sys
 import threading
 
 from bender.decorators import backbone_start, backbone_shutdown
 
 
-#===================================================================================================
-# BenderConsole
-#===================================================================================================
 class BenderConsole(object):
 
     def __init__(self, stdout=sys.stdout, stdin=sys.stdin):
@@ -45,11 +43,8 @@ class BenderConsole(object):
                 self.on_message_received(msg)
 
 
-#===================================================================================================
-# ConsoleMessage
-#===================================================================================================
 class ConsoleMessage(object):
-    
+
     def __init__(self, backbone, msg):
         self._msg = msg
         self._backbone = backbone
