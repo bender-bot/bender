@@ -54,7 +54,6 @@ class Bender(object):
     def start(self):
         self._brain.load()
         self._backbone.on_message_received = self.on_message_received
-        hooks.call_unique_hook(self._backbone, 'backbone_start_hook')
 
         self.register_builtin_scripts()
         self.register_setuptools_scripts()
@@ -63,10 +62,16 @@ class Bender(object):
             hooks.call_unique_hook(script, 'script_initialize_hook',
                                    brain=self._brain)
 
+        hooks.call_unique_hook(self._backbone, 'backbone_start_hook')
+
+
     def shutdown(self):
+        self._pool.shutdown(wait=True)
         for name, script in list(self._scripts.items()):
-            hooks.call_unique_hook(script, 'script_shutdown_hook', brain=self._brain)
             self._scripts.pop(name)
+            hooks.call_unique_hook(script, 'script_shutdown_hook',
+                                   brain=self._brain)
+
         hooks.call_unique_hook(self._backbone, 'backbone_shutdown_hook',
                                brain=self._brain)
         self._brain.dump()

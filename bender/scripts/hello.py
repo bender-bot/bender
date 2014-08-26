@@ -32,7 +32,6 @@ class HelloScript(object):
         msg.reply("I'm outta here!")
         bender.request_shutdown()
 
-
     @respond(r'help')
     def help(self, msg, bender):
         """
