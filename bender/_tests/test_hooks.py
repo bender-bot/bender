@@ -116,10 +116,11 @@ def test_invalid_impl_signature():
 
     with pytest.raises(hooks.HookError):
         @dec
-        def foo(xx, yy): pass
+        def foo(xx, yy):
+            pass
 
     with pytest.raises(hooks.HookError):
         class Impl(object):
             @dec
-            def foo(self, xx, yy): pass
-
+            def foo(self, xx, yy):
+                pass

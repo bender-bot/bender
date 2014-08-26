@@ -1,17 +1,15 @@
-import inspect
-import pkg_resources
-from bender import scripts
-from bender.brain import Brain
-from bender import hooks
 from collections import OrderedDict
-from concurrent.futures.thread import ThreadPoolExecutor
+import inspect
 import re
 import threading
 
+from bender import hooks
+from bender import scripts
+from bender.brain import Brain
+from concurrent.futures.thread import ThreadPoolExecutor
+import pkg_resources
 
-#===================================================================================================
-# Bender
-#===================================================================================================
+
 class Bender(object):
 
     def __init__(self, backbone, brain=None):
@@ -25,15 +23,12 @@ class Bender(object):
         self._futures = []  # list of futures submitted to the pool
         self._stop_loop = threading.Event()
 
-    
     def register_script(self, name, script):
         self._scripts[name] = script
-
 
     def register_builtin_scripts(self):
         for name, script in scripts.get_builtin_scripts():
             self.register_script(name, script)
-
 
     def register_setuptools_scripts(self):
         for p in pkg_resources.iter_entry_points('bender_script'):
@@ -42,14 +37,11 @@ class Bender(object):
                 obj = obj()
             self.register_script(p.name, obj)
 
-
     def get_script(self, name):
         return self._scripts[name]
 
-
     def iter_scripts(self):
         return iter(self._scripts.items())
-
 
     def start(self):
         self._brain.load()
@@ -64,7 +56,6 @@ class Bender(object):
 
         hooks.call_unique_hook(self._backbone, 'backbone_start_hook')
 
-
     def shutdown(self):
         self._pool.shutdown(wait=True)
         for name, script in list(self._scripts.items()):
@@ -77,25 +68,22 @@ class Bender(object):
         self._brain.dump()
         self._stop_loop.set()
 
-
     def request_shutdown(self):
         self._stop_loop.set()
-
 
     def loop(self):
         self.start()
         self._stop_loop.wait()
         self.shutdown()
 
-
     def on_message_received(self, msg):
-        
+
         def thread_exec(hook, brain, msg, match):
             try:
                 hooks.call(hook, brain=self._brain, msg=msg, match=match,
                            bender=self)
             except Exception as e:
-                msg.reply('*BZZT* %s' %e)
+                msg.reply('*BZZT* %s' % e)
             else:
                 with self._brain_lock:
                     brain.dump()
@@ -114,11 +102,7 @@ class Bender(object):
         if not handled:
             msg.reply('Command not recognized')
 
-
     def wait_all_messages(self):
         while self._futures:
             f = self._futures.pop()
             f.result()  # wait until future returns
-
-
-
