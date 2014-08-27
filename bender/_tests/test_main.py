@@ -41,8 +41,9 @@ def install_quitter_backbone(mock):
     installs a "quitter" backbone: a backbone that immediately quits right
     after starting.
 
-    It is installed as a distutils entry point by  mocking the relevant methods,
-    as close to distutils as possible to ensure all our code is tested.
+    It is installed as a distutils entry point by  mocking the relevant
+    methods, as close to distutils as possible to ensure all our code is
+    tested.
 
     This can be moved into a fixture, or even make QuitterBackbone
     available in bender.testing.
