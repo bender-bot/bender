@@ -20,6 +20,16 @@ def get_setuptools_backbones():
             pkg_resources.iter_entry_points('bender_backbone')}
 
 
+def parse_args(argv, available_backbones, default_backbone):
+    parser = argparse.ArgumentParser(description='Bender chat bot')
+    parser.add_argument('--backbone', default=default_backbone,
+                        choices=[default_backbone] + sorted(
+                            available_backbones),
+                        help='name of the backbone to use')
+    args = parser.parse_args(argv[1:])
+    return args
+
+
 def main(argv=None):
     if argv is None:
         # later we will probably use this to configure which backbone to use
@@ -28,17 +38,14 @@ def main(argv=None):
     available_backbones = get_setuptools_backbones()
     console_name = 'console'
 
-    parser = argparse.ArgumentParser(description='Bender chat bot')
-    parser.add_argument('--backbone', default=console_name,
-                        choices=[console_name] + sorted(available_backbones),
-                        help='name of the backbone to use')
-    args = parser.parse_args(argv[1:])
+    args = parse_args(argv, available_backbones, console_name)
 
     if args.backbone == console_name:
         backbone = get_console()
     else:
         backbone_class = available_backbones[args.backbone]
         backbone = backbone_class()  # instantiate class
+
     bot = Bender(backbone)
     bot.loop()
     return 0

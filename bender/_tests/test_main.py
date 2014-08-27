@@ -27,36 +27,50 @@ def test_main(mock):
 
 @pytest.mark.timeout(3.0)
 def test_backbone_selection(mock):
+    """
+    Test that we can select backbones from the command line.
+    """
+    quitter = install_quitter_backbone(mock)
+    mock.patch.object(bender._main, 'get_brain', return_value=VolatileBrain())
+    assert bender._main.main(['', '--backbone', 'quitter']) == 0
+    assert quitter.started
+
+
+def install_quitter_backbone(mock):
+    """
+    installs a backbone that immediately quits when started as a distutils
+    entry point, mocking whatever is necessary.
+
+    This can be moved into a fixture, or even make QuitterBackbone
+    available in bender.testing.
+    """
+    class QuitterBackbone(object):
+
+        def __init__(self):
+            self.on_message_received = None
+            self.started = False
+
+        @backbone_start
+        def start(self):
+            self.on_message_received(DumbMessage('quit', 'user'))
+            self.started = True
+
+    quitter = QuitterBackbone()
+    factory = lambda: quitter
+
     class EntryPoint(object):
         pass
 
-    backbone = QuitterBackbone()
-    get = lambda: backbone
-
-    p = EntryPoint()
-    p.name = 'quitter'
-    p.load = lambda: get
+    quitter_entry_point = EntryPoint()
+    quitter_entry_point.name = 'quitter'
+    quitter_entry_point.load = lambda: factory
 
     original_entry_points = pkg_resources.iter_entry_points
     def iter_entry_points(name):
         if name == 'bender_backbone':
-            return [p]
+            return [quitter_entry_point]
         else:
             return original_entry_points(name)
 
     mock.patch.object(pkg_resources, 'iter_entry_points', iter_entry_points)
-    mock.patch.object(bender._main, 'get_brain', return_value=VolatileBrain())
-    assert bender._main.main(['', '--backbone', 'quitter']) == 0
-    assert backbone.started
-
-
-class QuitterBackbone(object):
-
-    def __init__(self):
-        self.on_message_received = None
-        self.started = False
-
-    @backbone_start
-    def start(self):
-        self.on_message_received(DumbMessage('quit', 'user'))
-        self.started = True
+    return quitter
