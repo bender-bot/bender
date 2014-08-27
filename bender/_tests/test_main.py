@@ -66,6 +66,7 @@ def install_quitter_backbone(mock):
     quitter_entry_point.load = lambda: factory
 
     original_entry_points = pkg_resources.iter_entry_points
+
     def iter_entry_points(name):
         if name == 'bender_backbone':
             return [quitter_entry_point]
