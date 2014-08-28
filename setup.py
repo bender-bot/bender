@@ -12,7 +12,7 @@ classifiers = [
     'Operating System :: MacOS :: MacOS X',
     'Topic :: Utilities',
 ]
-py_versions = ['2', '2.6', '2.7']
+py_versions = ['2', '2.6', '2.7', '3.4']
 classifiers += [
     'Programming Language :: Python :: %s' % x
     for x in py_versions
@@ -29,8 +29,7 @@ setup(
     url='https://github.com/bender-bot/bender',
     license='LGPLv3',
     platforms=['unix', 'linux', 'osx', 'cygwin', 'win32'],
-    author='Fabio Menegazzo, Bruno Oliveira',
-    author_email='menegazzo@gmail.com',
+    author='Fabio Menegazzo <menegazzo@gmail.com>, Bruno Oliveira <nicoddemus@gmail.com>',
     classifiers=classifiers,
     install_requires=requirements,
     packages=['bender', 'bender.backbones', 'bender.scripts'],
