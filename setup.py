@@ -3,6 +3,11 @@ import sys
 from setuptools import setup
 
 
+authors = [
+    'Fabio Menegazzo <menegazzo@gmail.com>',
+    'Bruno Oliveira <nicoddemus@gmail.com>',
+]
+
 classifiers = [
     'Development Status :: 2 - Pre-Alpha',
     'Intended Audience :: Developers',
@@ -29,7 +34,7 @@ setup(
     url='https://github.com/bender-bot/bender',
     license='LGPLv3',
     platforms=['unix', 'linux', 'osx', 'cygwin', 'win32'],
-    author='Fabio Menegazzo <menegazzo@gmail.com>, Bruno Oliveira <nicoddemus@gmail.com>',
+    author=', '.join(authors),
     classifiers=classifiers,
     install_requires=requirements,
     packages=['bender', 'bender.backbones', 'bender.scripts'],
