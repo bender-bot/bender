@@ -39,21 +39,24 @@ class BenderConsole(object):
                 return
             if user_input:
                 self._stdout.flush()
-                msg = ConsoleMessage(self, user_input)
+                msg = ConsoleMessage(user_input, self._stdout)
                 self.on_message_received(msg)
 
 
 class ConsoleMessage(object):
 
-    def __init__(self, backbone, msg):
+    def __init__(self, msg, stream_output=sys.stdout):
         self._msg = msg
-        self._backbone = backbone
+        self._stream_output = stream_output
 
     def get_body(self):
         return self._msg
 
     def reply(self, message):
-        self._backbone._send_message(message)
+        self._stream_output.write(u'\n' + message + u'\n')
 
     def get_sender(self):
         return getpass.getuser()
+
+    def __reduce__(self):
+        return (self.__class__, (self._msg,))
