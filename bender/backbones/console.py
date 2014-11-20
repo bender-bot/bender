@@ -58,5 +58,10 @@ class ConsoleMessage(object):
     def get_sender(self):
         return getpass.getuser()
 
+    def __eq__(self, obj):
+        return \
+            self.get_body() == obj.get_body() and \
+            self.get_sender() == obj.get_sender()
+
     def __reduce__(self):
         return (self.__class__, (self._msg,))
