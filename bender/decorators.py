@@ -1,4 +1,4 @@
-from bender import hooks
+import bender_hooks as hooks
 
 
 def respond_hook(bender, brain, msg, match):

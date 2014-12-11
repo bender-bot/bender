@@ -1,5 +1,5 @@
-from bender import hooks
 from bender.decorators import respond, script_initialize
+import bender_hooks as hooks
 
 
 class HelloScript(object):
