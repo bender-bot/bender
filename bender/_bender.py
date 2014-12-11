@@ -3,7 +3,7 @@ import inspect
 import re
 import threading
 
-from bender import hooks
+import bender_hooks as hooks
 from bender import scripts
 from bender.brain import Brain
 from concurrent.futures.thread import ThreadPoolExecutor

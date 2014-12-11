@@ -23,7 +23,7 @@ classifiers += [
     for x in py_versions
 ]
 
-requirements = []
+requirements = ['bender-hooks']
 if sys.version_info[:2] < (3, 2):
     requirements += ['futures']
 
